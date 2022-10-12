@@ -1,0 +1,224 @@
+<!doctype html>
+<html  lang="en" xmlns:th = "http://www.thymeleaf.org/" th:fragment = "Layout(content)">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+     <link rel = "stylesheet" href="/css/style.css">
+    <title>admit Card</title>
+
+
+	 <script type="text/javascript">
+
+	 	function CreatePDFfromHTML() {
+    var HTML_Width = $("#content").width();
+    var HTML_Height = $("#content").height();
+    var top_left_margin = 15;
+    var PDF_Width = HTML_Width + (top_left_margin * 2);
+    var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+    var canvas_image_width = HTML_Width;
+    var canvas_image_height = HTML_Height;
+
+    var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+    html2canvas($("#content")[0]).then(function (canvas) {
+        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+        var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+        pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+        for (var i = 1; i <= totalPDFPages; i++) { 
+            pdf.addPage(PDF_Width, PDF_Height);
+            pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+        }
+        pdf.save("ADMIT CARD.pdf");
+          location.href = "redirect:/user/index";
+        // $("#content").hide();
+    });
+	}
+        // $("#btnPrint").live("click", function () {
+        //     var divContents = $("#content").html();
+        //     var printWindow = window.open('', '', 'height=400,width=800');
+        //     printWindow.document.write('<html><head><title>DIV Contents</title>');
+        //     printWindow.document.write('<link rel = "stylesheet" href="/css/style.css">');
+        //     printWindow.document.write('</head><body >');
+        //     printWindow.document.write(divContents);
+        //     printWindow.document.write('</body></html>');
+        //     printWindow.document.close();
+        //     printWindow.print();
+        // });
+
+  //       var doc = new jsPDF();
+		// 		var specialElementHandlers = {
+  //   '#editor': function (element, renderer) {
+  //       return true;
+  //   }
+		// };
+
+		// $('#btnPrint').click(function () {
+  //   doc.fromHTML($('#content').html(), 15, 15, {
+  //       'width': 170,
+  //           'elementHandlers': specialElementHandlers
+  //   });
+  //   doc.save('sample-file.pdf');
+		// });
+    </script>
+  </head>
+  <body>
+    
+<section>
+	<div class="container" id="content">
+		<div class="admit-card">
+			<div class="BoxA border- padding mar-bot"> 
+				<div class="row">
+						<div class="col-sm-4 txt-center">
+						<img src="/img/nift.png" class="image" alt="" width="100px;" />
+						
+						
+							</div>
+					<div class="col-sm-8">
+						<h5>National Institute of Fashion Technology, Patna</h5>
+						<h5>राष्ट्रीय फैशन प्रौद्योगिकी संस्थान, पटना</h5>
+						
+						<p>“Provisional” Admit Card for the Written/Skill Test Group-C Posts
+					Advt. notification (10001(01)/Rectt. of Group-c/2021-22 dated 10/10/2021)
+					</p>
+					</div>
+					
+				</div>
+			</div>
+			<div class="BoxC border- padding mar-bot">
+				<div class="row">
+					<div class="col-sm-6">
+						<h5>Candidate’s  Details</h5>
+					</div>
+				</div>
+			</div>
+			<div class="BoxD border- padding mar-bot">
+				<div class="row">
+					<div class="col-sm-10">
+						<table class="table table-bordered">
+						  <tbody>
+							<tr>
+							  <td><b>Roll No.: </b><samp th:text = "${product.RollNo}"></samp> </td>
+							  <td><b>Category: </b><samp th:text = "${product.Category}"></samp></td>
+							</tr>
+							<tr>
+							  <td><b>Candidate’s Name :</b><samp th:text = "${product.Name}"></samp></td>
+							  <td><b>Post Name :</b><samp th:text = "${product.Post}"></samp></td>
+							</tr>
+							<tr>
+							  <td><b>Father’s Name: </b><samp th:text = "${product.FatherName}"></samp></td>
+							  <td><b>Date of Birth: </b><samp th:text = "${product.DOB}"></samp></td>
+							</tr>
+							
+						  </tbody>
+						</table>
+					</div>
+					<div class="col-sm-2 txt-center">
+						<table class="table table-bordered">
+						  <tbody>
+							<tr>
+							<th scope="row txt-center"> <img th:src="@{'data:image/jpeg;base64,'+${contentImages}}" class="image" alt="" width="90px;"/>
+								</th>
+							<!--   <th scope="row txt-center">	<img src="/img/photo.jpeg" class="image" alt="" width="100px;" />
+						 </th> -->
+							</tr>
+							
+						  </tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		
+			<div class="BoxF border- padding mar-bot txt-center">
+				<div class="row">
+					<div class="col-sm-12">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>Exam Centre Address</th>
+									<th>Exam Date</th>
+									<th>Exam Time</th>
+								</tr>
+							</thead>
+						  <tbody>
+							<tr>
+							  <td>NIFT Campus, Mithapur Farms, Patna, Bihar - 800001</td>
+							  <td>01.07.2022</td>
+							  <td>08:00 AM</td>
+							</tr>
+						
+						  </tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+				<div class="BoxE border- padding mar-bot">
+				<div class="row">
+					<div class="col-sm-12">
+
+					<h2>Important Instructions:</h2>
+
+					<p>
+          1. Appearing in the exam is subject to fulfilling the eligibility conditions and submission of
+          requisite documents for verification and acceptance by the NIFT authorities.
+          <br>
+					2. Candidate can appear in only one exam/post if he/she has applied for more than one post.
+					<br>
+					3. Printed copy of this admit card must be carried to the exam center as entry will not be
+					permitted without the same. (Digital copy of admit card is not valid)
+					<br>
+					4. This admit card is issued provisionally and does not constitute an offer of recruitment.
+					Issuance of the admit card does not mean that the candidate has been declared to eligible.
+					<br>
+					5. Candidates must report to the exam center before 45 mins as per the scheduled time. The
+					candidate will not be permitted entry under any circumstances.
+					<br>
+					6. The candidate must bring any valid original photo ID proof such as: (i) Voter ID Card (ii) PAN
+					Card (iii) Driving License (iv) Passport (V) Aadhar Card (vi) Photo Id issued by any recognized
+					government organization etc. for verification at the exam center. Candidates without valid
+					original ID proof will not be permitted. (Digital copy is not valid)
+					<br>
+					7. No traveling and/or other expenses would be paid to candidates for attending this exam.
+					Request for change of exam center or date of exam will not be entertained.
+					<br>
+					8. Discrepancies, if any regarding download admit card can be emailed at
+					“recruitmentcell.patna@nift.ac.in”.
+					<br>
+					9. Mobile Phone, digital/smartwatch, bag, handbag, papers, notes, books, calculator, electronic
+					gadgets/equipment, etc. It is clarified that there shall be no arrangements at the exam
+					center for keeping aforesaid items. If any item is lost, The NIFT center will not be
+					responsible.
+				</p>
+
+					
+					</div>
+				</div>
+			</div>
+			<footer class="txt-center">
+			<button type="button" class="btn btn-success" onclick="CreatePDFfromHTML()" id="btnPrint">Print</button>
+				<p>*** NIFT  ***</p>
+			</footer>
+			
+		</div>
+	</div>
+	
+</section>
+    
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script th:src = "@{/js/script.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
